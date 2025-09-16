@@ -37,7 +37,7 @@ function ToDo() {
 
         const updateTodoData = todoListData.find((elem) => { return elem === value })
         
-        console.log(toDoValue, "++++");
+        // console.log(toDoValue, "++++");
         
         // const newTodoData = todoListData.splice(index, 1, toDoValue);
         // return  elem.id === index
