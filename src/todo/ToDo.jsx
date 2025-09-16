@@ -17,7 +17,6 @@ function ToDo() {
             setToDoListData((prev)=> [...prev ,toDoValue]);
         }
         setToDoValue("");
-        
         setIsToggle(false);
     }
 
