@@ -18,6 +18,7 @@ function ToDo() {
         }
         setToDoValue("");
         setIsToggle(false);
+        
     }
 
     //Delete To Do Data
