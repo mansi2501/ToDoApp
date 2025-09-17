@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { Trash, PencilSquare } from 'react-bootstrap-icons';
 
 function ToDo() {
     const [toDoValue, setToDoValue] = useState('');
     const [todoListData, setToDoListData] = useState([]);
     const [isToggle, setIsToggle] = useState(false);
+    const [editIndex, setEditIndex] = useState(null)
 
 
     //Add To Do Data
@@ -17,8 +19,7 @@ function ToDo() {
             setToDoListData((prev)=> [...prev ,toDoValue]);
         }
         setToDoValue("");
-        setIsToggle(false);
-        
+        setIsToggle(false);   
     }
 
     //Delete To Do Data
@@ -30,53 +31,55 @@ function ToDo() {
     }
 
     //Update To Do Data
-    const handleUpdate = (value) => {
-        setIsToggle(true);
-        setToDoValue(value);
-        
-        const istoDoData = todoListData.includes(toDoValue)
+    const saveEditToDo = () => {
+        if (toDoValue && editIndex !== null) {
+            let updateToDo = todoListData.map((todo, i) => {
+                return i === editIndex ? toDoValue : todo
+            })
 
-        const updateTodoData = todoListData.find((elem) => { return elem === value })
-        
-        // console.log(toDoValue, "++++");
-        
-        // const newTodoData = todoListData.splice(index, 1, toDoValue);
-        // return  elem.id === index
-        console.log("updateTodoData", updateTodoData);
-        
-        if(!toDoValue) return
-        
-        if (!istoDoData) {
-            //setToDoListData(updateTodoData);
+            setToDoListData(updateToDo);
         }
+        setIsToggle(false);
+        setEditIndex(null)
+        setToDoValue("")
+    }
+
+
+    //Set Index of Data to be Change
+    const handleUpdate = (index) => {
+        setIsToggle(true);
+        setEditIndex(index);
+        setToDoValue(todoListData[index]);
     }
 
     return (
         <>
             <div className='text-center'>
-                <div className="input-group mb-3 row .align-self-*">
-                    <input type="text" className="col-10 mt-3 mb-3 mx-auto d-block w-50 rounded" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value={toDoValue} onChange={(e) => setToDoValue(e.target.value)} />
-                    
-                    {!isToggle?
-                    <button type="submit" className='col-2 btn btn-success btn-sm' onClick={()=>AddToDo()}>Add</button>
-                        :
-                    <button type="submit" className='col-2 btn btn-success btn-sm' onClick={() => handleUpdate(toDoValue)}>Edit</button>
-                    }
+                <div className="d-flex w-50 mx-auto input-group mb-3 row">
+                    <div class="input-group mb-3">
+                    <input type="text" className="col-11 mt-3 mb-3 mx-auto form-control" placeholder="Enter To Do" aria-label="Example text with button addon" aria-describedby="button-addon1" value={toDoValue} onChange={(e) => setToDoValue(e.target.value)}/>
+                        {!isToggle ?
+                            <button className="col-1 btn btn-success h-50 mt-3 mx-2" type="submit" onClick={() => AddToDo()}>Add</button>
+                            :
+                            <button type="submit" className="col-1 btn btn-success h-50 mx-2 mt-3" onClick={() => saveEditToDo()}>Edit</button>
+                        }
+                    </div>
                 </div>
             </div>
 
-        <ul class="list-group w-50 mx-auto d-block">
+        <ul class="text w-50 mx-auto d-block">
                 {todoListData.map((item, index) => (
                     <>
-                        <li class="list-group-item" key={index}>{item}
-                            <button className="btn btn-warning btn-sm me-2" onClick={() => handleUpdate(item, index)
+                        <li class="fst-italic list-group-item border-bottom-1 pb-2" key={index}>{item}
+                            <button className="btn btn-link" onClick={() => handleUpdate(index)
                             }>
-                                        Edit
+                                        <PencilSquare size={20} color="blue" />
                             </button>
-                            <button className="btn btn-danger btn-sm me-2" onClick={() => handleDelete(item)
+                            <button className="btn btn-link" onClick={() => handleDelete(item)
                             }>
-                                        Delete
+                                       <Trash size={20} color="red" />
                             </button>
+                            
                         </li>
                     </>      
             ))}   
