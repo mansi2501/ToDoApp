@@ -1,4 +1,3 @@
-import React from 'react';
 import logo from "../logo.svg"
 
 function Header() {
@@ -18,12 +17,9 @@ function Header() {
                             <li className="nav-item">
                                 <a className="nav-link" href="/products">Photo Gallary</a>
                             </li>
-                            {/* <li className="nav-item">
-                                <a className="nav-link" href="#">Pricing</a>
-                            </li>
                             <li className="nav-item">
-                                <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                            </li> */}
+                                <a className="nav-link" href="/form">From validation</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

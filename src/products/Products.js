@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Cards from "../component/Cards";
+import { Container, Row, Col } from 'react-bootstrap';
 
 function Products() {
 
@@ -17,16 +18,18 @@ function Products() {
     return (
         <>
             <div className='text-center'>
-                <h1 className="text-decoration-underline text-success">Photo Gallary</h1>
+                <h1 className="text-decoration-underline text-success pb-3">Photo Gallary</h1>
             </div>
 
-            {console.log("data", data[0])}
-            {data.map((item, index) => (
-                <>
-                    <Cards id={index} name={item.name} src={item.image} />
-                </>
-
-            ))}
+            <Container>
+                <Row>
+                    {data.map((item, index) => (
+                        <Col key={item.id} lg={4} md={4} sm={6} xs={12} className="mb-4">
+                            <Cards id={index} name={item.name} src={item.image} inst={item.instructions} rating={item.rating} review={item.reviewCount} />
+                        </Col>
+                    ))}
+                </Row>
+            </Container>
 
         </>
     );
