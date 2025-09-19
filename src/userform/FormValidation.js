@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { validationSchema } from '../schema';
 import { useFormData } from "./FormDataContext";
@@ -6,35 +7,37 @@ function FormValidation() {
 
     const { formData, updateFormData } = useFormData();
 
+    const userData = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        age: '',
+        password: '',
+        confirmPassword: '',
+        date: '',
+        gender: '',
+        interest: []
+    };
+
     const formik = useFormik({
-        initialValues: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            age: '',
-            password: '',
-            confirmPassword: '',
-            date: '',
-            gender: '',
-            interest: []
-        },
+        initialValues: JSON.parse(localStorage.getItem("userInfo")) || userData,
         validationSchema: validationSchema,
-        onSubmit: values => {
+        onSubmit: (values, { resetForm }) => {
             alert(JSON.stringify(values, null, 2));
+
+            // Clear localStorage
+            localStorage.removeItem("userInfo");
+
+            // Reset the form to initial empty values
+            resetForm({ values: userData });
         },
     });
 
-    //form submit
-    const handleSubmit = async (e) => {
-        //e.preventDefault();
-        console.log("form submitted");
-        try {
-            //await validationSchema
-            console.log("form submitted");
-        }
-        catch { }
-    }
 
+    // Save to localStorage whenever formData changes
+    useEffect(() => {
+        localStorage.setItem("userInfo", JSON.stringify(formik.values));
+    }, [formik.values]);
 
     const handleCheckboxChange = (e) => {
         const { value, checked } = e.target;
@@ -46,7 +49,6 @@ function FormValidation() {
         }
         formik.setFieldValue("interest", newInterests);
     };
-
 
     return (
         <div>
@@ -117,7 +119,7 @@ function FormValidation() {
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan="2"><button type="submit" className="btn btn-outline-primary" onClick={(e) => handleSubmit(e)}>Submit</button></td>
+                            <td colSpan="2"><button type="submit" className="btn btn-outline-primary">Submit</button></td>
                         </tr>
                     </thead>
                 </table>
